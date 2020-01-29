@@ -91,6 +91,7 @@
     <module>org.openhab.binding.groheondus</module>
     <module>org.openhab.binding.harmonyhub</module>
     <module>org.openhab.binding.hc-gateway</module>
+    <module>org.openhab.binding.hc_gateway</module>
     <module>org.openhab.binding.hdanywhere</module>
     <module>org.openhab.binding.hdpowerview</module>
     <module>org.openhab.binding.helios</module>
