@@ -26,6 +26,17 @@ import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.bshg.homeconnect.hcpservice.*;
+
+import javax.validation.constraints.Null;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static org.eclipse.smarthome.core.thing.DefaultSystemChannelTypeProvider.SYSTEM_POWER;
 import static org.openhab.binding.hc_gateway.internal.BindingConstants.OPERATION_STATE;
@@ -41,8 +52,10 @@ import static org.openhab.binding.hc_gateway.internal.BindingConstants.POWER_STA
 public class VcrHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(VcrHandler.class);
-
+    private @Nullable HomeAppliance homeAppliance;
     private @Nullable Configuration config;
+    private final ThreadPoolExecutor threadPoolExecutor =
+            new ThreadPoolExecutor(1, 1, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     public VcrHandler(Thing thing) {
         super(thing);
@@ -54,9 +67,11 @@ public class VcrHandler extends BaseThingHandler {
             if (command instanceof OnOffType) {
                 switch (((OnOffType) command)) {
                     case ON:
+                        homeAppliance.changeProperty("BSH.Common.Setting.PowerState","BSH.Common.EnumType.PowerState.On");
                         updateState(OPERATION_STATE, OperationStateType.ON);
                         break;
                     case OFF:
+                        homeAppliance.changeProperty("BSH.Common.Setting.PowerState","BSH.Common.EnumType.PowerState.Standby");
                     default:
                         updateState(OPERATION_STATE, OperationStateType.OFF);
                         break;
@@ -77,6 +92,35 @@ public class VcrHandler extends BaseThingHandler {
         // logger.debug("Start initializing!");
         config = getConfigAs(Configuration.class);
 
+        final List<String> requiredKeys = new ArrayList<>();
+        final List<String> maximallyAllowedOptionKeys = new ArrayList<>();
+
+        final HomeApplianceContext homeApplianceContext =
+                new HomeApplianceContext(config.identifier, config.FMF, config.DDF, HomeApplianceGroup.CLEANING_ROBOT, Scenario.REMOTE_OPERATION,
+                        requiredKeys, maximallyAllowedOptionKeys);
+        final EndDeviceContext endDeviceContext =
+                new EndDeviceContext("VCR", "DeviceID", "AppVersionName");
+        URI uri = null;
+        try {
+            uri = new URI(config.networkAddress);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        ConnectionContext connectionContext = new ConnectionContext(uri, config.aesKey, config.aesIV, false);
+
+        final HomeApplianceConfiguration homeApplianceConfiguration =
+                new HomeApplianceConfiguration(endDeviceContext, homeApplianceContext,
+                        connectionContext);
+
+        homeAppliance = HomeApplianceFactory.createHomeAppliance(threadPoolExecutor, ThreadPoolRunnable::new,
+                homeApplianceConfiguration);
+
+        homeAppliance.serviceState().observe()
+                .first(serviceState -> serviceState.equals(ServiceState.INITIALIZED))
+                .subscribe(serviceState -> {
+                homeAppliance.connect();
+        });
+
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly. Also, before leaving this method a thing
         // status from one of ONLINE, OFFLINE or UNKNOWN must be set. This might already be the real thing status in
@@ -92,7 +136,7 @@ public class VcrHandler extends BaseThingHandler {
 
         // Example for background initialization:
         scheduler.execute(() -> {
-            boolean thingReachable = true; // <background task with long running initialization here>
+            boolean thingReachable = (homeAppliance.connectionState().get() == ConnectionState.CONNECTED); // <background task with long running initialization here>
             // when done do:
             if (thingReachable) {
                 updateStatus(ThingStatus.ONLINE);
