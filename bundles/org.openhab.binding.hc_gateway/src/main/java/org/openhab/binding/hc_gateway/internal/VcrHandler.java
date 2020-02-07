@@ -15,19 +15,15 @@ package org.openhab.binding.hc_gateway.internal;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.library.types.OnOffType;
-import org.eclipse.smarthome.core.thing.Channel;
+import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
-import org.eclipse.smarthome.core.thing.binding.builder.ChannelBuilder;
-import org.eclipse.smarthome.core.thing.binding.builder.ThingBuilder;
 import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.eclipse.smarthome.core.thing.DefaultSystemChannelTypeProvider.SYSTEM_POWER;
 import static org.openhab.binding.hc_gateway.internal.BindingConstants.OPERATION_STATE;
 import static org.openhab.binding.hc_gateway.internal.BindingConstants.POWER_STATE;
 
@@ -52,13 +48,14 @@ public class VcrHandler extends BaseThingHandler {
     public void handleCommand(ChannelUID channelUID, Command command) {
         if (POWER_STATE.equals(channelUID.getId())) {
             if (command instanceof OnOffType) {
+                logger.warn("handle Command: {}", command);
                 switch (((OnOffType) command)) {
                     case ON:
-                        updateState(OPERATION_STATE, OperationStateType.ON);
+                        updateState(OPERATION_STATE, new StringType("ON"));
                         break;
                     case OFF:
                     default:
-                        updateState(OPERATION_STATE, OperationStateType.OFF);
+                        updateState(OPERATION_STATE, new StringType("OFF"));
                         break;
                 }
             }

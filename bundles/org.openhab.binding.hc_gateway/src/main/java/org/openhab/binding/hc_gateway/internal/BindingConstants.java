@@ -30,6 +30,6 @@ public class BindingConstants {
     public static final ThingTypeUID THING_VCR = new ThingTypeUID(BINDING_ID, "hc_vcr");
 
     // All Channel ids
-    public static final String POWER_STATE = "powerstate";
-    public static final String OPERATION_STATE = "operationstate";
+    public static final String POWER_STATE = "powerState";
+    public static final String OPERATION_STATE = "operationState";
 }

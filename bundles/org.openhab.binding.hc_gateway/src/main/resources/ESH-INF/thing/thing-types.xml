@@ -10,8 +10,8 @@
 		<description>The CleaningRobot we all know and love so much</description>
 
 		<channels>
-			<channel id="powerstate" typeId="power" />
-			<channel id="operationstate" typeId="operationstate-channel" />
+			<channel id="powerState" typeId="system.power" />
+			<channel id="operationState" typeId="operationStateChannelType" />
 		</channels>
 
 		<config-description>
@@ -43,8 +43,8 @@
 
 	</thing-type>
 
-	<channel-type id="operationstate-channel">
-		<kind>state</kind>
+	<channel-type id="operationStateChannelType">
+		<item-type>String</item-type>
 		<label>Operation State</label>
 		<state readOnly="true">
 			<options>
