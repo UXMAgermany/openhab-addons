@@ -12,41 +12,55 @@
  */
 package org.openhab.binding.hc_gateway.internal;
 
-import static org.openhab.binding.hc_gateway.internal.BindingConstants.*;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.smarthome.core.library.types.OnOffType;
+import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
+import org.eclipse.smarthome.core.thing.binding.builder.ChannelBuilder;
+import org.eclipse.smarthome.core.thing.binding.builder.ThingBuilder;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.eclipse.smarthome.core.thing.DefaultSystemChannelTypeProvider.SYSTEM_POWER;
+import static org.openhab.binding.hc_gateway.internal.BindingConstants.OPERATION_STATE;
+import static org.openhab.binding.hc_gateway.internal.BindingConstants.POWER_STATE;
+
 /**
- * The {@link Handler} is responsible for handling commands, which are
+ * The {@link VcrHandler} is responsible for handling commands, which are
  * sent to one of the channels.
  *
  * @author UXMA - Initial contribution
  */
 @NonNullByDefault
-public class Handler extends BaseThingHandler {
+public class VcrHandler extends BaseThingHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(Handler.class);
+    private final Logger logger = LoggerFactory.getLogger(VcrHandler.class);
 
     private @Nullable Configuration config;
 
-    public Handler(Thing thing) {
+    public VcrHandler(Thing thing) {
         super(thing);
     }
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        if (POWERSTATE.equals(channelUID.getId())) {
-            if (command instanceof RefreshType) {
-                // TODO: handle data refresh
+        if (POWER_STATE.equals(channelUID.getId())) {
+            if (command instanceof OnOffType) {
+                switch (((OnOffType) command)) {
+                    case ON:
+                        updateState(OPERATION_STATE, OperationStateType.ON);
+                        break;
+                    case OFF:
+                    default:
+                        updateState(OPERATION_STATE, OperationStateType.OFF);
+                        break;
+                }
             }
 
             // TODO: handle command

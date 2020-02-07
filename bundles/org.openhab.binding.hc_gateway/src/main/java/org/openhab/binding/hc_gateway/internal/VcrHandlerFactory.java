@@ -12,8 +12,6 @@
  */
 package org.openhab.binding.hc_gateway.internal;
 
-import static org.openhab.binding.hc_gateway.internal.BindingConstants.*;
-
 import java.util.Collections;
 import java.util.Set;
 
@@ -26,17 +24,19 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
+import static org.openhab.binding.hc_gateway.internal.BindingConstants.THING_VCR;
+
 /**
- * The {@link HandlerFactory} is responsible for creating things and thing
+ * The {@link VcrHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author UXMA - Initial contribution
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.hc_gateway", service = ThingHandlerFactory.class)
-public class HandlerFactory extends BaseThingHandlerFactory {
+public class VcrHandlerFactory extends BaseThingHandlerFactory {
 
-    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
+    private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_VCR);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -47,8 +47,8 @@ public class HandlerFactory extends BaseThingHandlerFactory {
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new Handler(thing);
+        if (THING_VCR.equals(thingTypeUID)) {
+            return new VcrHandler(thing);
         }
 
         return null;

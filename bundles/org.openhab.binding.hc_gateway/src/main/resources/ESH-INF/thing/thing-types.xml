@@ -44,15 +44,15 @@
 	</thing-type>
 
 	<channel-type id="operationstate-channel">
-		<kind>trigger</kind>
+		<kind>state</kind>
 		<label>Operation State</label>
-		<event>
+		<state readOnly="true">
 			<options>
 				<option value="ON">ON</option>
 				<option value="OFF">OFF</option>
 				<option value="RUNNING">RUNNING</option>
 			</options>
-		</event>
+		</state>
 	</channel-type>
 
 </thing:thing-descriptions>
