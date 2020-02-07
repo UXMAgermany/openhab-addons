@@ -27,8 +27,8 @@ public class BindingConstants {
     private static final String BINDING_ID = "hc_gateway";
 
     // List of all Thing Type UIDs
-    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "sample");
+    public static final ThingTypeUID THING_TYPE_SAMPLE = new ThingTypeUID(BINDING_ID, "hc_vcr");
 
     // List of all Channel ids
-    public static final String CHANNEL_1 = "channel1";
+    public static final String POWERSTATE = "powerstate";
 }

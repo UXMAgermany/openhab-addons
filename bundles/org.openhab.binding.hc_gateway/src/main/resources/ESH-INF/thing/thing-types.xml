@@ -5,28 +5,54 @@
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
 	<!-- Sample Thing Type -->
-	<thing-type id="sample">
+	<thing-type id="hc_vcr">
 		<label>VCR</label>
 		<description>The CleaningRobot we all know and love so much</description>
 
 		<channels>
-			<channel id="powerstate" typeId="sample-channel" />
+			<channel id="powerstate" typeId="power" />
+			<channel id="operationstate" typeId="operationstate-channel" />
 		</channels>
 
 		<config-description>
-			<parameter name="config1" type="text" required="true">
-				<label>Sample Parameter</label>
-				<description>This is a sample text configuration parameter</description>
+			<parameter name="identifier" type="text" required="true">
+				<label>HAID</label>
+				<description>HomeAppliance Identifier</description>
+			</parameter>
+			<parameter name="networkAddress" type="text" required="true">
+				<label>adress</label>
+				<description>Network address</description>
+			</parameter>
+			<parameter name="aesKey" type="text" required="true">
+				<label>AES Key</label>
+				<description>AES Key</description>
+			</parameter>
+			<parameter name="aesIV" type="text" required="true">
+				<label>AES IV</label>
+				<description>AES IV</description>
+			</parameter>
+			<parameter name="DDF" type="text" required="false">
+				<label>DDF</label>
+				<description>Content of DDF xml</description>
+			</parameter>
+			<parameter name="FMF" type="text" required="false">
+				<label>FMF</label>
+				<description>Content of FMF xml</description>
 			</parameter>
 		</config-description>
 
 	</thing-type>
 
-	<!-- Sample Channel Type -->
-	<channel-type id="sample-channel">
-		<item-type>hc_gatewayItem</item-type>
-		<label>hc_gateway Binding Channel</label>
-		<description>Sample channel for hc_gateway Binding</description>
+	<channel-type id="operationstate-channel">
+		<kind>trigger</kind>
+		<label>Operation State</label>
+		<event>
+			<options>
+				<option value="ON">ON</option>
+				<option value="OFF">OFF</option>
+				<option value="RUNNING">RUNNING</option>
+			</options>
+		</event>
 	</channel-type>
 
 </thing:thing-descriptions>

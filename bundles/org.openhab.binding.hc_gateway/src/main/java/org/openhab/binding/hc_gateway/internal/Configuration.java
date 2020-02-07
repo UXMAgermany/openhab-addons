@@ -22,5 +22,10 @@ public class Configuration {
     /**
      * Sample configuration parameter. Replace with your own.
      */
-    public String config1;
+    public String identifier;
+    public String networkAddress;
+    public String aesKey;
+    public String aesIV;
+    public String DDF;
+    public String FMF;
 }
