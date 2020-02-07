@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.hc_gateway.internal;
 
-import static org.openhab.binding.hc_gateway.internal.hc_gatewayBindingConstants.*;
+import static org.openhab.binding.hc_gateway.internal.BindingConstants.*;
 
 import java.util.Collections;
 import java.util.Set;
@@ -27,14 +27,14 @@ import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The {@link hc_gatewayHandlerFactory} is responsible for creating things and thing
+ * The {@link HandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author UXMA - Initial contribution
  */
 @NonNullByDefault
 @Component(configurationPid = "binding.hc_gateway", service = ThingHandlerFactory.class)
-public class hc_gatewayHandlerFactory extends BaseThingHandlerFactory {
+public class HandlerFactory extends BaseThingHandlerFactory {
 
     private static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Collections.singleton(THING_TYPE_SAMPLE);
 
@@ -48,7 +48,7 @@ public class hc_gatewayHandlerFactory extends BaseThingHandlerFactory {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_SAMPLE.equals(thingTypeUID)) {
-            return new hc_gatewayHandler(thing);
+            return new Handler(thing);
         }
 
         return null;

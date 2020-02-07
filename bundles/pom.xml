@@ -90,7 +90,6 @@
     <module>org.openhab.binding.gpstracker</module>
     <module>org.openhab.binding.groheondus</module>
     <module>org.openhab.binding.harmonyhub</module>
-    <module>org.openhab.binding.hc-gateway</module>
     <module>org.openhab.binding.hc_gateway</module>
     <module>org.openhab.binding.hdanywhere</module>
     <module>org.openhab.binding.hdpowerview</module>
@@ -210,7 +209,7 @@
     <module>org.openhab.binding.systeminfo</module>
     <module>org.openhab.binding.tado</module>
     <module>org.openhab.binding.tankerkoenig</module>
-    <module>org.openhab.binding.telegram</module>    
+    <module>org.openhab.binding.telegram</module>
     <module>org.openhab.binding.tellstick</module>
     <module>org.openhab.binding.tesla</module>
     <module>org.openhab.binding.tplinksmarthome</module>

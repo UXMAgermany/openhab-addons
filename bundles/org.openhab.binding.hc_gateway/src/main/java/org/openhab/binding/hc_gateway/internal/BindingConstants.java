@@ -16,13 +16,13 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 /**
- * The {@link hc_gatewayBindingConstants} class defines common constants, which are
+ * The {@link BindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author UXMA - Initial contribution
  */
 @NonNullByDefault
-public class hc_gatewayBindingConstants {
+public class BindingConstants {
 
     private static final String BINDING_ID = "hc_gateway";
 

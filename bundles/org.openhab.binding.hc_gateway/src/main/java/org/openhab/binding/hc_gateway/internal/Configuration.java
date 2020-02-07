@@ -13,11 +13,11 @@
 package org.openhab.binding.hc_gateway.internal;
 
 /**
- * The {@link hc_gatewayConfiguration} class contains fields mapping thing configuration parameters.
+ * The {@link Configuration} class contains fields mapping thing configuration parameters.
  *
  * @author UXMA - Initial contribution
  */
-public class hc_gatewayConfiguration {
+public class Configuration {
 
     /**
      * Sample configuration parameter. Replace with your own.

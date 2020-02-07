@@ -12,7 +12,7 @@
  */
 package org.openhab.binding.hc_gateway.internal;
 
-import static org.openhab.binding.hc_gateway.internal.hc_gatewayBindingConstants.*;
+import static org.openhab.binding.hc_gateway.internal.BindingConstants.*;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -26,19 +26,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link hc_gatewayHandler} is responsible for handling commands, which are
+ * The {@link Handler} is responsible for handling commands, which are
  * sent to one of the channels.
  *
  * @author UXMA - Initial contribution
  */
 @NonNullByDefault
-public class hc_gatewayHandler extends BaseThingHandler {
+public class Handler extends BaseThingHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(hc_gatewayHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(Handler.class);
 
-    private @Nullable hc_gatewayConfiguration config;
+    private @Nullable Configuration config;
 
-    public hc_gatewayHandler(Thing thing) {
+    public Handler(Thing thing) {
         super(thing);
     }
 
@@ -61,7 +61,7 @@ public class hc_gatewayHandler extends BaseThingHandler {
     @Override
     public void initialize() {
         // logger.debug("Start initializing!");
-        config = getConfigAs(hc_gatewayConfiguration.class);
+        config = getConfigAs(Configuration.class);
 
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly. Also, before leaving this method a thing

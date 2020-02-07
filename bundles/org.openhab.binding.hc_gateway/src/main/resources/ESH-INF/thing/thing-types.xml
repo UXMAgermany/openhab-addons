@@ -6,11 +6,11 @@
 
 	<!-- Sample Thing Type -->
 	<thing-type id="sample">
-		<label>hc_gateway Binding Thing</label>
-		<description>Sample thing for hc_gateway Binding</description>
+		<label>VCR</label>
+		<description>The CleaningRobot we all know and love so much</description>
 
 		<channels>
-			<channel id="channel1" typeId="sample-channel" />
+			<channel id="powerstate" typeId="sample-channel" />
 		</channels>
 
 		<config-description>
