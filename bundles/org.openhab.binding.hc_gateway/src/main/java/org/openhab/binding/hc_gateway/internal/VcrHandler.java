@@ -12,6 +12,7 @@
  */
 package org.openhab.binding.hc_gateway.internal;
 
+import com.bshg.homeconnect.hcpservice.*;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.library.types.OnOffType;
@@ -23,13 +24,10 @@ import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.types.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.bshg.homeconnect.hcpservice.*;
 
-import javax.validation.constraints.Null;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -68,8 +66,8 @@ public class VcrHandler extends BaseThingHandler {
                         updateState(OPERATION_STATE, new StringType("ON"));
                         break;
                     case OFF:
-                        homeAppliance.changeProperty("BSH.Common.Setting.PowerState","BSH.Common.EnumType.PowerState.Standby");
                     default:
+                        homeAppliance.changeProperty("BSH.Common.Setting.PowerState","BSH.Common.EnumType.PowerState.Standby");
                         updateState(OPERATION_STATE, new StringType("OFF"));
                         break;
                 }
@@ -101,7 +99,7 @@ public class VcrHandler extends BaseThingHandler {
         try {
             uri = new URI(config.networkAddress);
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error("error:", e);
         }
         ConnectionContext connectionContext = new ConnectionContext(uri, config.aesKey, config.aesIV, false);
 
@@ -113,10 +111,8 @@ public class VcrHandler extends BaseThingHandler {
                 homeApplianceConfiguration);
 
         homeAppliance.serviceState().observe()
-                .first(serviceState -> serviceState.equals(ServiceState.INITIALIZED))
-                .subscribe(serviceState -> {
-                homeAppliance.connect();
-        });
+                .first(serviceState -> ServiceState.INITIALIZED == serviceState)
+                .subscribe(serviceState -> homeAppliance.connect());
 
         // TODO: Initialize the handler.
         // The framework requires you to return from this method quickly. Also, before leaving this method a thing
@@ -131,15 +127,17 @@ public class VcrHandler extends BaseThingHandler {
         // we set this upfront to reliably check status updates in unit tests.
         updateStatus(ThingStatus.UNKNOWN);
 
-        // Example for background initialization:
         scheduler.execute(() -> {
-            boolean thingReachable = (homeAppliance.connectionState().get() == ConnectionState.CONNECTED); // <background task with long running initialization here>
-            // when done do:
-            if (thingReachable) {
-                updateStatus(ThingStatus.ONLINE);
-            } else {
-                updateStatus(ThingStatus.OFFLINE);
-            }
+           homeAppliance.connectionState().observe().subscribe(connectionState -> {
+                switch (connectionState) {
+                    case CONNECTED:
+                        updateStatus(ThingStatus.ONLINE);
+                        break;
+                    case DISCONNECTED:
+                    default:
+                        updateStatus(ThingStatus.OFFLINE);
+                }
+            });
         });
 
         // logger.debug("Finished initializing!");

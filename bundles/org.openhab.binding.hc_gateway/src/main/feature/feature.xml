@@ -4,6 +4,11 @@
 
     <feature name="openhab-binding-hc_gateway" description="hc_gateway Binding" version="${project.version}">
         <feature>openhab-runtime-base</feature>
+        <feature prerequisite="true">wrap</feature>
         <bundle start-level="80">mvn:org.openhab.addons.bundles/org.openhab.binding.hc_gateway/${project.version}</bundle>
+                <bundle dependency="true">wrap:file:${project.basedir}/src/main/resources/lib/com.uxma.mabindingscore-1.0.jar</bundle>
+<!--        <bundle dependency="true">wrap:mvn:com.uxma/mabindingscore/1.0$Bundle-Name=mabindingscore&amp;Bundle-SymbolicName=com.uxma.mabindingscore&amp;Bundle-Version=1.0</bundle>-->
+        <!--        <bundle dependency="true">mvn:com.bshg.homeconnect/hcpservice/1.0</bundle>-->
+        <!--        <bundle dependency="true">wrap:mvn:com.bshg.homeconnect/hcpservice/1.0$Bundle-Name=HCPService&amp;Bundle-SymbolicName=com.bshg.homeconnect.hcpservice&amp;Bundle-Version=1.0</bundle>-->
     </feature>
 </features>
